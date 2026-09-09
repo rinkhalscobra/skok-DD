@@ -1,0 +1,128 @@
+﻿[
+    {
+        "Slide":  1,
+        "Title":  "CRM and Customer Dashboard — Complete Walkthrough",
+        "StartSeconds":  0,
+        "DurationSeconds":  63.27
+    },
+    {
+        "Slide":  2,
+        "Title":  "CRM writes the records; the dashboard presents them",
+        "StartSeconds":  63.27,
+        "DurationSeconds":  62.47
+    },
+    {
+        "Slide":  3,
+        "Title":  "Sign in, open the CRM, and confirm your role",
+        "StartSeconds":  125.73,
+        "DurationSeconds":  56.81
+    },
+    {
+        "Slide":  4,
+        "Title":  "Understand the dashboard before editing the CRM",
+        "StartSeconds":  182.54,
+        "DurationSeconds":  63.93
+    },
+    {
+        "Slide":  5,
+        "Title":  "Where customers see CRM-managed information",
+        "StartSeconds":  246.48,
+        "DurationSeconds":  60.88
+    },
+    {
+        "Slide":  6,
+        "Title":  "The directory screen has three responsibilities",
+        "StartSeconds":  307.36,
+        "DurationSeconds":  55.67
+    },
+    {
+        "Slide":  7,
+        "Title":  "Search, filter, paginate, and open the correct profile",
+        "StartSeconds":  363.02,
+        "DurationSeconds":  58.78
+    },
+    {
+        "Slide":  8,
+        "Title":  "Create users with the correct role and ownership",
+        "StartSeconds":  421.8,
+        "DurationSeconds":  71.31
+    },
+    {
+        "Slide":  9,
+        "Title":  "Profile Summary is the identity and access checkpoint",
+        "StartSeconds":  493.11,
+        "DurationSeconds":  53.23
+    },
+    {
+        "Slide":  10,
+        "Title":  "Edit identity carefully; delete only with explicit confirmation",
+        "StartSeconds":  546.34,
+        "DurationSeconds":  74.47
+    },
+    {
+        "Slide":  11,
+        "Title":  "One customer, eleven operational views",
+        "StartSeconds":  620.81,
+        "DurationSeconds":  61.33
+    },
+    {
+        "Slide":  12,
+        "Title":  "Manage banking and crypto history in one view",
+        "StartSeconds":  682.14,
+        "DurationSeconds":  66.41
+    },
+    {
+        "Slide":  13,
+        "Title":  "Control amounts, order, and availability",
+        "StartSeconds":  748.55,
+        "DurationSeconds":  62.73
+    },
+    {
+        "Slide":  14,
+        "Title":  "Separate bank, crypto, and Interac workflows",
+        "StartSeconds":  811.29,
+        "DurationSeconds":  71.84
+    },
+    {
+        "Slide":  15,
+        "Title":  "Manage product records and their customer-visible status",
+        "StartSeconds":  883.13,
+        "DurationSeconds":  60.4
+    },
+    {
+        "Slide":  16,
+        "Title":  "Use execution controls for exchanges; use records for loans",
+        "StartSeconds":  943.53,
+        "DurationSeconds":  65.67
+    },
+    {
+        "Slide":  17,
+        "Title":  "Wallet destinations and deposit requests are different records",
+        "StartSeconds":  1009.2,
+        "DurationSeconds":  60.97
+    },
+    {
+        "Slide":  18,
+        "Title":  "Three summary amounts plus supporting payment details",
+        "StartSeconds":  1070.17,
+        "DurationSeconds":  67.33
+    },
+    {
+        "Slide":  19,
+        "Title":  "Branding is global; the IP card is informational",
+        "StartSeconds":  1137.5,
+        "DurationSeconds":  67.9
+    },
+    {
+        "Slide":  20,
+        "Title":  "Know what this CRM does not currently manage",
+        "StartSeconds":  1205.4,
+        "DurationSeconds":  58.83
+    },
+    {
+        "Slide":  21,
+        "Title":  "Use the same five-step loop for every change",
+        "StartSeconds":  1264.23,
+        "DurationSeconds":  75.44
+    }
+]

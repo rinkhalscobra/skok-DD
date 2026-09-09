@@ -1,0 +1,47 @@
+[
+  {
+    "title": "1. Sign in and open the correct customer",
+    "caption": "Search first. Confirm name, email, and role before editing.",
+    "narration": "Sign in with an approved staff account and open the CRM admin route. Before making any change, search for the customer instead of scrolling through the directory. Open the profile and confirm at least two identifiers, such as the full name and email address. This recording uses a dedicated CRM Training Customer, so every save you see is real but isolated from existing customers."
+  },
+  {
+    "title": "2. Update profile and feature access",
+    "caption": "Edit profile saves identity and KYC. Interac access has its own control.",
+    "narration": "Use Edit profile for identity, email, IBAN, KYC, CRM role, hierarchy assignments, password, and membership date. Here, KYC changes from pending to approved and is saved. Interac access is separate: enable it from the profile summary when the customer is authorized to submit Interac requests. Always wait for the green success message before moving to another section."
+  },
+  {
+    "title": "3. Add the first fiat balance",
+    "caption": "Balances tab → Add balance → Fiat → USD → amount → Create balance.",
+    "narration": "To create a balance, open the Balances tab and choose Add balance. Select Fiat, enter a three-letter currency code, optionally provide the display name, enter the starting amount, and choose its initial availability status. In this example we create a USD balance of one thousand two hundred fifty dollars and seventy-five cents. Create balance writes the row; the green confirmation proves the save completed."
+  },
+  {
+    "title": "4. Update an existing balance",
+    "caption": "Edit balance changes one asset. Apply to all balances changes every status.",
+    "narration": "This is the exact balance update workflow. Find the correct asset card and click Edit balance. Replace the number in New balance, select the status for this asset, and click Save balance. We change USD to two thousand four hundred dollars and fifty cents. The customer-wide status control is different: choose a status there and click Apply to all balances only when every fiat and crypto row should receive the same availability setting."
+  },
+  {
+    "title": "5. Add crypto and control display order",
+    "caption": "Crypto uses a supported ticker; arrow buttons change dashboard order.",
+    "narration": "Adding cryptocurrency uses the same button. Change Balance Type to Crypto, enter a supported ticker such as BTC, add the asset name, starting quantity, and status, then create the row. The CRM validates the symbol with the live market provider. Each balance card also has up and down arrows. Those arrows change display order; Edit balance changes the amount or status; Delete permanently removes only that asset row."
+  },
+  {
+    "title": "6. Verify the customer dashboard",
+    "caption": "After saving, sign in as the training customer and verify the Overview.",
+    "narration": "Do not stop at the CRM success message. Sign in as the customer, open Overview, and verify that the expected currency, amount, status behavior, and ordering are visible. Here the customer sees the updated USD amount and the BTC holding created moments ago. If the result is missing, return to CRM, refresh balances, and confirm that you edited the correct customer and asset."
+  },
+  {
+    "title": "7. Add activity without changing a balance",
+    "caption": "Transaction rows are history. They do not automatically recalculate balances.",
+    "narration": "Transactions and balances are separate records. To add history, open Transactions, click Add transaction, choose Banking or Crypto, complete the displayed fields, and create the transaction. This makes an activity row for the customer, but it does not automatically add money to the balance. If the account total must change, update the correct balance separately, or use a supported approval workflow that explicitly performs the balance movement."
+  },
+  {
+    "title": "8. Edit, delete, refresh, and use the other tables",
+    "caption": "Every table exposes only the actions supported by that record type.",
+    "narration": "Existing records expose Edit and Delete. Edit opens the stored fields; Save persists the change; Cancel discards it; Delete asks for confirmation and removes the row. Refresh current table reloads one area, while Refresh all tables reloads the complete customer workspace. Cards and crypto deposits can include approval actions. Transfers and Interac have status workflows. Bill payments, exchange, loans, wallets, and taxes use the same add, edit, delete, save, cancel, and refresh pattern with fields appropriate to each table."
+  },
+  {
+    "title": "9. The reliable operating sequence",
+    "caption": "Identify → inspect → change once → verify → document.",
+    "narration": "Use the same sequence for every CRM action. Identify the customer with two details. Inspect the current record and related history. Make one authorized change and save once. Wait for confirmation, refresh the CRM, and verify the affected customer dashboard page. Finally, record who requested and approved the action. For balance problems, remember the key distinction: transaction history describes activity, while the Balances tab controls the displayed account totals."
+  }
+]

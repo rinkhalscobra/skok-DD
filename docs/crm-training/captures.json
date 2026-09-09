@@ -1,0 +1,122 @@
+[
+  {
+    "name": "01-login",
+    "description": "Secure sign-in screen",
+    "file": "docs/crm-training/assets/captures/01-login.png"
+  },
+  {
+    "name": "02-dashboard-overview",
+    "description": "Customer dashboard overview",
+    "file": "docs/crm-training/assets/captures/02-dashboard-overview.png"
+  },
+  {
+    "name": "03-dashboard-transactions",
+    "description": "Customer transaction history",
+    "file": "docs/crm-training/assets/captures/03-dashboard-transactions.png"
+  },
+  {
+    "name": "04-dashboard-transfers",
+    "description": "Customer transfer workspace",
+    "file": "docs/crm-training/assets/captures/04-dashboard-transfers.png"
+  },
+  {
+    "name": "05-dashboard-cards",
+    "description": "Customer card controls",
+    "file": "docs/crm-training/assets/captures/05-dashboard-cards.png"
+  },
+  {
+    "name": "06-dashboard-taxes",
+    "description": "Customer tax workspace",
+    "file": "docs/crm-training/assets/captures/06-dashboard-taxes.png"
+  },
+  {
+    "name": "07-crm-directory",
+    "description": "CRM directory, security notice, and branding controls",
+    "file": "docs/crm-training/assets/captures/07-crm-directory.png"
+  },
+  {
+    "name": "08-create-user",
+    "description": "Create-user form with role and assignment controls",
+    "file": "docs/crm-training/assets/captures/08-create-user.png"
+  },
+  {
+    "name": "09-customer-directory",
+    "description": "Filtered customer directory",
+    "file": "docs/crm-training/assets/captures/09-customer-directory.png"
+  },
+  {
+    "name": "10-profile-summary",
+    "description": "Customer profile summary and Interac access",
+    "file": "docs/crm-training/assets/captures/10-profile-summary.png"
+  },
+  {
+    "name": "11-edit-profile",
+    "description": "Profile, KYC, role, assignment, and credential editor",
+    "file": "docs/crm-training/assets/captures/11-edit-profile.png"
+  },
+  {
+    "name": "12-delete-user",
+    "description": "Protected permanent-deletion confirmation",
+    "file": "docs/crm-training/assets/captures/12-delete-user.png"
+  },
+  {
+    "name": "13-table-manager",
+    "description": "Customer table manager and all operational areas",
+    "file": "docs/crm-training/assets/captures/13-table-manager.png"
+  },
+  {
+    "name": "14-transactions",
+    "description": "Banking and crypto transaction administration",
+    "file": "docs/crm-training/assets/captures/14-transactions.png"
+  },
+  {
+    "name": "15-balances",
+    "description": "Fiat and crypto balances with customer-wide status",
+    "file": "docs/crm-training/assets/captures/15-balances.png"
+  },
+  {
+    "name": "16-transfers",
+    "description": "Bank and crypto transfer administration",
+    "file": "docs/crm-training/assets/captures/16-transfers.png"
+  },
+  {
+    "name": "17-interac",
+    "description": "Interac request review and status workflow",
+    "file": "docs/crm-training/assets/captures/17-interac.png"
+  },
+  {
+    "name": "18-cards",
+    "description": "Card records and approval workflow",
+    "file": "docs/crm-training/assets/captures/18-cards.png"
+  },
+  {
+    "name": "19-bill-payments",
+    "description": "Bill-payment records",
+    "file": "docs/crm-training/assets/captures/19-bill-payments.png"
+  },
+  {
+    "name": "20-currency-exchange",
+    "description": "Fiat/crypto exchange controls and history",
+    "file": "docs/crm-training/assets/captures/20-currency-exchange.png"
+  },
+  {
+    "name": "21-loans",
+    "description": "Loan records and application status",
+    "file": "docs/crm-training/assets/captures/21-loans.png"
+  },
+  {
+    "name": "22-wallets",
+    "description": "Crypto and tax wallet records",
+    "file": "docs/crm-training/assets/captures/22-wallets.png"
+  },
+  {
+    "name": "23-taxes",
+    "description": "Tax summary, payment instructions, and tax records",
+    "file": "docs/crm-training/assets/captures/23-taxes.png"
+  },
+  {
+    "name": "24-crypto-deposits",
+    "description": "Crypto deposit requests",
+    "file": "docs/crm-training/assets/captures/24-crypto-deposits.png"
+  }
+]
