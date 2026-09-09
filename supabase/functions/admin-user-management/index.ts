@@ -11,6 +11,16 @@ const corsHeaders = {
 type CrmRole = "customer" | "agent" | "superior_manager" | "admin";
 type AdminClient = ReturnType<typeof createClient>;
 
+const allowedKycStatuses = new Set(["pending", "submitted", "approved", "rejected"]);
+
+function optionalString(value: unknown) {
+  return typeof value === "string" && value.trim() ? value.trim() : null;
+}
+
+function wait(milliseconds: number) {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
 function jsonResponse(body: Record<string, unknown>, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
@@ -118,7 +128,7 @@ Deno.serve(async (req: Request) => {
 
     const { data: callerProfile, error: callerProfileError } = await adminClient
       .from("profiles")
-      .select("crm_role, is_admin")
+      .select("crm_role, is_admin, assigned_manager_id")
       .eq("id", caller.id)
       .maybeSingle();
 
@@ -133,6 +143,144 @@ Deno.serve(async (req: Request) => {
 
     const payload = await req.json();
     const action = typeof payload.action === "string" ? payload.action : "update";
+
+    if (action === "create") {
+      const fullName = typeof payload.full_name === "string" ? payload.full_name.trim() : "";
+      const email = typeof payload.email === "string" ? payload.email.trim().toLowerCase() : "";
+      const password = typeof payload.password === "string" ? payload.password : "";
+      const requestedRole = normalizeCrmRole(payload.crm_role, false);
+      const allowedRoles: CrmRole[] = callerRole === "admin"
+        ? ["customer", "agent", "superior_manager", "admin"]
+        : callerRole === "superior_manager"
+        ? ["customer", "agent"]
+        : ["customer"];
+
+      if (!fullName) return jsonResponse({ error: "Full name is required" }, 400);
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return jsonResponse({ error: "Enter a valid email address" }, 400);
+      }
+      if (password.length < 6) {
+        return jsonResponse({ error: "Password must be at least 6 characters" }, 400);
+      }
+      if (!allowedRoles.includes(requestedRole)) {
+        return jsonResponse({ error: `${callerRole} cannot create the requested CRM role` }, 403);
+      }
+
+      const requestedManagerId = optionalString(payload.assigned_manager_id);
+      const requestedAgentId = optionalString(payload.assigned_agent_id);
+      const assignedManagerId = callerRole === "agent"
+        ? optionalString(callerProfile?.assigned_manager_id)
+        : callerRole === "superior_manager"
+        ? caller.id
+        : requestedRole === "customer" || requestedRole === "agent"
+        ? requestedManagerId
+        : null;
+      const assignedAgentId = callerRole === "agent"
+        ? caller.id
+        : requestedRole === "customer"
+        ? requestedAgentId
+        : null;
+      const kycStatus = allowedKycStatuses.has(String(payload.kyc_status))
+        ? String(payload.kyc_status)
+        : "pending";
+      const emailConfirm = payload.email_confirm !== false;
+
+      const { data: createdAuth, error: createAuthError } = await adminClient.auth.admin.createUser({
+        email,
+        password,
+        email_confirm: emailConfirm,
+        user_metadata: { full_name: fullName },
+      });
+
+      if (createAuthError || !createdAuth.user) {
+        return jsonResponse({ error: createAuthError?.message || "Could not create the login" }, 400);
+      }
+
+      const createdUserId = createdAuth.user.id;
+
+      try {
+        let generatedProfile: Record<string, unknown> | null = null;
+        for (let attempt = 0; attempt < 10; attempt += 1) {
+          const { data } = await adminClient
+            .from("profiles")
+            .select("*")
+            .eq("id", createdUserId)
+            .maybeSingle();
+          if (data) {
+            generatedProfile = data;
+            break;
+          }
+          await wait(150);
+        }
+
+        const profilePayload: Record<string, unknown> = {
+          id: createdUserId,
+          full_name: fullName,
+          email,
+          account_iban: typeof payload.account_iban === "string" ? payload.account_iban.trim().toUpperCase() : "",
+          kyc_status: kycStatus,
+          crm_role: requestedRole,
+          is_admin: requestedRole === "admin",
+          assigned_manager_id: assignedManagerId,
+          assigned_agent_id: assignedAgentId,
+          plain_password: password,
+          updated_at: new Date().toISOString(),
+        };
+
+        if (typeof payload.account_created_at === "string" && !Number.isNaN(Date.parse(payload.account_created_at))) {
+          profilePayload.created_at = new Date(payload.account_created_at).toISOString();
+        }
+        if (typeof payload.show_account_created_at === "boolean") {
+          profilePayload.show_account_created_at = payload.show_account_created_at;
+        }
+
+        let profileResult = generatedProfile
+          ? await adminClient.from("profiles").update(profilePayload).eq("id", createdUserId).select("*").single()
+          : await adminClient.from("profiles").insert(profilePayload).select("*").single();
+
+        for (let attempt = 0; attempt < 6 && profileResult.error; attempt += 1) {
+          const missingColumn = profileResult.error.message.match(/'([^']+)' column/)?.[1];
+          if (!missingColumn || !(missingColumn in profilePayload)) break;
+          delete profilePayload[missingColumn];
+          profileResult = generatedProfile
+            ? await adminClient.from("profiles").update(profilePayload).eq("id", createdUserId).select("*").single()
+            : await adminClient.from("profiles").insert(profilePayload).select("*").single();
+        }
+
+        if (profileResult.error || !profileResult.data) {
+          throw new Error(profileResult.error?.message || "The CRM profile could not be configured");
+        }
+
+        let balanceWarning: string | null = null;
+        const { error: balanceError } = await adminClient.from("fiat_balances").upsert([
+          { user_id: createdUserId, currency: "USD", name: "US Dollar", balance: 0, status: "available", display_order: 0 },
+          { user_id: createdUserId, currency: "EUR", name: "Euro", balance: 0, status: "available", display_order: 1 },
+          { user_id: createdUserId, currency: "CAD", name: "Canadian Dollar", balance: 0, status: "available", display_order: 2 },
+          { user_id: createdUserId, currency: "CHF", name: "Swiss Franc", balance: 0, status: "available", display_order: 3 },
+        ], { onConflict: "user_id,currency", ignoreDuplicates: true });
+        if (balanceError) balanceWarning = balanceError.message;
+
+        return jsonResponse({
+          success: true,
+          action: "create",
+          balance_warning: balanceWarning,
+          profile: profileResult.data,
+          user: {
+            id: createdUserId,
+            email: createdAuth.user.email,
+            email_confirmed: Boolean(createdAuth.user.email_confirmed_at),
+          },
+        }, 201);
+      } catch (createError) {
+        const rollbackResult = await adminClient.auth.admin.deleteUser(createdUserId, false);
+        const message = createError instanceof Error ? createError.message : "Account setup failed";
+        return jsonResponse({
+          error: message,
+          rollback_warning: rollbackResult.error?.message || null,
+        }, 500);
+      }
+    }
+
     const targetUserId = typeof payload.user_id === "string" ? payload.user_id.trim() : "";
 
     if (!targetUserId) {
@@ -147,6 +295,63 @@ Deno.serve(async (req: Request) => {
 
     if (visibleTargetError || !visibleTarget) {
       return jsonResponse({ error: "You do not have access to that user" }, 403);
+    }
+
+    if (action === "get_kyc_documents") {
+      const { data: submissions, error: submissionsError } = await adminClient
+        .from("kyc_submissions")
+        .select("*")
+        .eq("user_id", targetUserId)
+        .order("submitted_at", { ascending: false });
+
+      if (submissionsError) {
+        return jsonResponse({ error: `Could not load KYC submissions: ${submissionsError.message}` }, 500);
+      }
+
+      const documentFields = [
+        { field: "id_front_url", kind: "id_front", label: "ID document - front" },
+        { field: "id_back_url", kind: "id_back", label: "ID document - back" },
+        { field: "selfie_url", kind: "selfie", label: "Verification selfie" },
+      ] as const;
+      const bucket = adminClient.storage.from("kyc-documents");
+
+      const signedSubmissions = await Promise.all((submissions ?? []).map(async (submission) => {
+        const documents = await Promise.all(documentFields.map(async ({ field, kind, label }) => {
+          const path = typeof submission[field] === "string" ? submission[field].trim() : "";
+          if (!path) return null;
+
+          // Never sign a path outside the selected customer's storage folder.
+          if (!path.startsWith(`${targetUserId}/`)) {
+            return { kind, label, path, signed_url: null, error: "Invalid document path" };
+          }
+
+          const { data, error } = await bucket.createSignedUrl(path, 10 * 60);
+          return {
+            kind,
+            label,
+            path,
+            signed_url: data?.signedUrl ?? null,
+            error: error?.message ?? null,
+          };
+        }));
+
+        const metadata = { ...submission };
+        delete metadata.id_front_url;
+        delete metadata.id_back_url;
+        delete metadata.selfie_url;
+
+        return {
+          ...metadata,
+          documents: documents.filter(Boolean),
+        };
+      }));
+
+      return jsonResponse({
+        success: true,
+        action: "get_kyc_documents",
+        signed_url_expires_in: 600,
+        submissions: signedSubmissions,
+      });
     }
 
     if (action === "delete") {

@@ -13,6 +13,8 @@ import {
   Database,
   Eye,
   EyeOff,
+  ExternalLink,
+  FileText,
   Image as ImageIcon,
   Landmark,
   Layers3,
@@ -25,6 +27,7 @@ import {
   Save,
   Search,
   Send,
+  ShieldCheck,
   Trash2,
   Upload,
   Wallet,
@@ -335,6 +338,39 @@ const TRANSFERS_TABLE: TableConfig = {
   icon: RefreshCw,
   scope: 'user',
   filterColumn: 'user_id',
+};
+
+type KycDocumentLink = {
+  kind: 'id_front' | 'id_back' | 'selfie';
+  label: string;
+  path: string;
+  signed_url: string | null;
+  error: string | null;
+};
+
+type KycSubmissionReview = {
+  id: string;
+  user_id: string;
+  date_of_birth: string | null;
+  nationality: string | null;
+  id_type: string | null;
+  id_number: string | null;
+  address_line1: string | null;
+  address_line2: string | null;
+  city: string | null;
+  state: string | null;
+  postal_code: string | null;
+  country: string | null;
+  submitted_at: string | null;
+  reviewed_at: string | null;
+  review_notes: string | null;
+  documents: KycDocumentLink[];
+};
+
+type KycDocumentsResponse = {
+  error?: string;
+  submissions?: KycSubmissionReview[];
+  signed_url_expires_in?: number;
 };
 const INTERAC_TRANSFERS_TABLE_NAME = 'interac_transfers';
 const INTERAC_ACCESS_SETTINGS_TABLE_NAME = 'interac_access_settings';
@@ -2534,6 +2570,230 @@ function ProfileSummaryCard({
         </div>
       )}
     </>
+  );
+}
+
+function KycDocumentReviewCard({ userId }: { userId: string }) {
+  const [submissions, setSubmissions] = useState<KycSubmissionReview[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadDocuments = async () => {
+      setLoading(true);
+      setError('');
+
+      try {
+        const { data: sessionData } = await supabase.auth.getSession();
+        let currentSession = sessionData.session;
+        const tokenExpiresSoon =
+          !currentSession?.expires_at ||
+          currentSession.expires_at * 1000 <= Date.now() + 60_000;
+
+        if (!currentSession || tokenExpiresSoon) {
+          const { data: refreshedData, error: refreshError } = await supabase.auth.refreshSession();
+          if (refreshError) throw refreshError;
+          currentSession = refreshedData.session;
+        }
+
+        if (!currentSession?.access_token) {
+          throw new Error('Your CRM session is missing. Please sign in again and retry.');
+        }
+
+        let response: Response;
+        try {
+          response = await fetch(
+            `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-user-management`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
+                Authorization: `Bearer ${currentSession.access_token}`,
+              },
+              body: JSON.stringify({ action: 'get_kyc_documents', user_id: userId }),
+            }
+          );
+        } catch {
+          throw new Error('Could not reach the secure KYC document service. Please retry.');
+        }
+
+        const rawResponse = await response.text();
+        let responseBody: KycDocumentsResponse = {};
+        if (rawResponse) {
+          try {
+            responseBody = JSON.parse(rawResponse) as KycDocumentsResponse;
+          } catch {
+            responseBody = {};
+          }
+        }
+
+        if (!response.ok) {
+          throw new Error(responseBody.error || rawResponse || `KYC documents failed to load (${response.status}).`);
+        }
+
+        if (!cancelled) setSubmissions(responseBody.submissions || []);
+      } catch (loadError) {
+        if (!cancelled) {
+          setSubmissions([]);
+          setError(loadError instanceof Error ? loadError.message : 'Could not load KYC documents.');
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+
+    void loadDocuments();
+    return () => {
+      cancelled = true;
+    };
+  }, [refreshKey, userId]);
+
+  return (
+    <section className="border border-[#006446]/14 bg-white shadow-[0_24px_60px_-48px_rgba(0,100,70,0.45)]">
+      <div className="flex flex-col gap-3 border-b border-[#006446]/10 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <div className="flex items-center gap-2">
+            <ShieldCheck className="h-5 w-5 text-[#006446]" />
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#006446]">KYC document review</p>
+          </div>
+          <h2 className="mt-2 text-xl font-serif font-bold text-slate-950">Client identity documents</h2>
+          <p className="mt-1 text-sm text-slate-500">Private files open through secure links that expire after 10 minutes.</p>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setRefreshKey((value) => value + 1)}
+          disabled={loading}
+          className="inline-flex items-center justify-center gap-2 rounded-full border border-[#006446]/12 px-4 py-2 text-sm font-medium text-[#006446] transition-colors hover:bg-[#006446]/[0.05] disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+          Refresh documents
+        </button>
+      </div>
+
+      {loading ? (
+        <div className="flex items-center gap-3 px-6 py-8 text-sm text-slate-500">
+          <Loader2 className="h-5 w-5 animate-spin text-[#006446]" />
+          Loading the client's secure KYC submission...
+        </div>
+      ) : error ? (
+        <div className="flex items-start gap-3 bg-red-50 px-6 py-5 text-sm text-red-700">
+          <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0" />
+          <div>
+            <p className="font-semibold">KYC documents could not be loaded</p>
+            <p className="mt-1">{error}</p>
+          </div>
+        </div>
+      ) : submissions.length === 0 ? (
+        <div className="px-6 py-8 text-sm text-slate-500">
+          This client has not submitted KYC details or documents yet.
+        </div>
+      ) : (
+        <div className="space-y-5 p-6">
+          {submissions.map((submission, submissionIndex) => {
+            const address = [
+              submission.address_line1,
+              submission.address_line2,
+              submission.city,
+              submission.state,
+              submission.postal_code,
+              submission.country,
+            ].filter(Boolean).join(', ');
+
+            return (
+              <article key={submission.id} className="rounded-2xl border border-[#006446]/12 bg-[#006446]/[0.025] p-5">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <p className="text-sm font-semibold text-slate-900">
+                      {submissionIndex === 0 ? 'Latest submission' : `Earlier submission ${submissionIndex + 1}`}
+                    </p>
+                    <p className="mt-1 text-xs text-slate-500">
+                      Submitted {submission.submitted_at ? new Date(submission.submitted_at).toLocaleString() : 'date unavailable'}
+                    </p>
+                  </div>
+                  {submission.reviewed_at ? (
+                    <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+                      Reviewed {new Date(submission.reviewed_at).toLocaleDateString()}
+                    </span>
+                  ) : (
+                    <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700">Awaiting review</span>
+                  )}
+                </div>
+
+                <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                  {[
+                    ['Date of birth', submission.date_of_birth ? formatDayMonthYear(submission.date_of_birth) : 'Not provided'],
+                    ['Nationality', submission.nationality || 'Not provided'],
+                    ['ID type', submission.id_type ? toSentenceCase(submission.id_type) : 'Not provided'],
+                    ['ID number', submission.id_number || 'Not provided'],
+                  ].map(([label, value]) => (
+                    <div key={label} className="rounded-xl border border-[#006446]/10 bg-white px-4 py-3">
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#006446]">{label}</p>
+                      <p className="mt-1 break-words text-sm text-slate-700">{value}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-3 rounded-xl border border-[#006446]/10 bg-white px-4 py-3">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#006446]">Residential address</p>
+                  <p className="mt-1 text-sm text-slate-700">{address || 'Not provided'}</p>
+                </div>
+
+                {submission.review_notes ? (
+                  <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-amber-700">Review notes</p>
+                    <p className="mt-1 whitespace-pre-wrap text-sm text-amber-900">{submission.review_notes}</p>
+                  </div>
+                ) : null}
+
+                <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                  {submission.documents.map((document) => {
+                    const isImage = /\.(?:avif|gif|jpe?g|png|webp)$/i.test(document.path);
+                    return (
+                      <div key={`${submission.id}-${document.kind}`} className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+                        <div className="flex min-h-48 items-center justify-center bg-slate-100">
+                          {document.signed_url && isImage ? (
+                            <img
+                              src={document.signed_url}
+                              alt={document.label}
+                              className="max-h-72 w-full object-contain"
+                            />
+                          ) : isImage ? (
+                            <ImageIcon className="h-10 w-10 text-slate-300" />
+                          ) : (
+                            <FileText className="h-10 w-10 text-slate-300" />
+                          )}
+                        </div>
+                        <div className="p-4">
+                          <p className="font-semibold text-slate-900">{document.label}</p>
+                          {document.signed_url ? (
+                            <a
+                              href={document.signed_url}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-[#006446] hover:underline"
+                            >
+                              Open full document
+                              <ExternalLink className="h-4 w-4" />
+                            </a>
+                          ) : (
+                            <p className="mt-2 text-sm text-red-600">{document.error || 'This file is unavailable.'}</p>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      )}
+    </section>
   );
 }
 
@@ -6856,16 +7116,21 @@ export default function CrmAdmin() {
         account_created_at: accountCreatedAt,
         show_account_created_at: draft.show_account_created_at,
       };
-      const runCreateRequest = (accessToken: string) =>
-        fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-user-management`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
-            Authorization: `Bearer ${accessToken}`,
-          },
-          body: JSON.stringify(requestBody),
-        });
+      const runCreateRequest = async (accessToken: string) => {
+        try {
+          return await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-user-management`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
+              Authorization: `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify(requestBody),
+          });
+        } catch {
+          throw new Error('Could not reach the account-creation service. Please check your connection and retry.');
+        }
+      };
 
       const runCompatibilityCreate = async (accessToken: string): Promise<CreateUserResponse> => {
         if (!isViewerAdmin) {
@@ -8533,6 +8798,8 @@ export default function CrmAdmin() {
                 profiles={profiles}
                 onSave={handleProfileSave}
               />
+
+              <KycDocumentReviewCard userId={selectedProfile.id} />
 
               <InteracAccessControlCard
                 enabled={selectedInteracEnabled}
