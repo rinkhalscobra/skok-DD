@@ -37,7 +37,6 @@ import {
 import BrandLogo from '../../components/ui/BrandLogo';
 import Dropdown from '../../components/ui/Dropdown';
 import QRCode from '../../components/ui/QRCode';
-import IpWhitelistCard from '../../components/admin/IpWhitelistCard';
 import { useAuth } from '../../contexts/AuthContext';
 import {
   DEFAULT_BRANDING,
@@ -9517,7 +9516,6 @@ export default function CrmAdmin() {
         </section>
       ) : (
         <>
-          {isViewerAdmin && <IpWhitelistCard />}
           {isViewerAdmin && brandingPanel}
           {customerDirectory}
         </>
