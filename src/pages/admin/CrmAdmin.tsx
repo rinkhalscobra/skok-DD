@@ -3207,7 +3207,7 @@ function BrandingSettingsCard({
                   type="email"
                   value={form.legalContactEmail}
                   onChange={(event) => onFieldChange('legalContactEmail', event.target.value)}
-                  placeholder="legal@example.com"
+                  placeholder="support@skokbank.com"
                   autoComplete="email"
                   className="w-full rounded-2xl border border-[#006446]/14 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition-all focus:border-[#006446]/35 focus:ring-2 focus:ring-[#006446]/15"
                 />

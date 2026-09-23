@@ -194,7 +194,7 @@ export const termsOfServiceTranslations = {
     'terms.contact.office': 'Legal & Compliance Office',
     'terms.contact.address1': '[Insert Registered Address]',
     'terms.contact.address2': '[Insert City, Country, Postal Code]',
-    'terms.contact.email': '[Insert Legal Email]',
+    'terms.contact.email': 'support@skokbank.com',
     'terms.contact.phone': '[Insert Contact Number]',
 
     'terms.notice.title': '29. Important Notice',
@@ -394,7 +394,7 @@ export const termsOfServiceTranslations = {
     'terms.contact.office': 'Service Juridique & Conformité',
     'terms.contact.address1': "[Insérer l'adresse enregistrée]",
     'terms.contact.address2': '[Insérer la ville, le pays, le code postal]',
-    'terms.contact.email': "[Insérer l'email juridique]",
+    'terms.contact.email': 'support@skokbank.com',
     'terms.contact.phone': '[Insérer le numéro de contact]',
 
     'terms.notice.title': '29. Avis important',
@@ -594,7 +594,7 @@ export const termsOfServiceTranslations = {
     'terms.contact.office': 'Rechts- und Compliance-Abteilung',
     'terms.contact.address1': '[Eingetragene Adresse einfügen]',
     'terms.contact.address2': '[Stadt, Land, Postleitzahl einfügen]',
-    'terms.contact.email': '[Rechts-E-Mail einfügen]',
+    'terms.contact.email': 'support@skokbank.com',
     'terms.contact.phone': '[Kontaktnummer einfügen]',
 
     'terms.notice.title': '29. Wichtiger Hinweis',
@@ -794,7 +794,7 @@ export const termsOfServiceTranslations = {
     'terms.contact.office': 'Oficina Legal y de Cumplimiento',
     'terms.contact.address1': '[Inserte la dirección registrada]',
     'terms.contact.address2': '[Inserte la ciudad, país y código postal]',
-    'terms.contact.email': '[Inserte el correo electrónico legal]',
+    'terms.contact.email': 'support@skokbank.com',
     'terms.contact.phone': '[Inserte el número de contacto]',
 
     'terms.notice.title': '29. Aviso importante',
@@ -994,7 +994,7 @@ export const termsOfServiceTranslations = {
     'terms.contact.office': 'Ufficio Legale e Conformità',
     'terms.contact.address1': '[Inserire l’indirizzo registrato]',
     'terms.contact.address2': '[Inserire città, Paese e CAP]',
-    'terms.contact.email': '[Inserire l’e-mail legale]',
+    'terms.contact.email': 'support@skokbank.com',
     'terms.contact.phone': '[Inserire il numero di contatto]',
 
     'terms.notice.title': '29. Avviso importante',
@@ -1194,7 +1194,7 @@ export const termsOfServiceTranslations = {
     'terms.contact.office': 'Υπηρεσία Νομικών Υποθέσεων και Συμμόρφωσης',
     'terms.contact.address1': '[Εισαγάγετε την καταχωρισμένη διεύθυνση]',
     'terms.contact.address2': '[Εισαγάγετε πόλη, χώρα και ταχυδρομικό κώδικα]',
-    'terms.contact.email': '[Εισαγάγετε το νομικό email]',
+    'terms.contact.email': 'support@skokbank.com',
     'terms.contact.phone': '[Εισαγάγετε τον αριθμό επικοινωνίας]',
 
     'terms.notice.title': '29. Σημαντική ειδοποίηση',

@@ -128,7 +128,7 @@ export const DEFAULT_BRANDING: BrandingSettings = {
   depositorProtectionTitle: '',
   depositorProtectionDescription: '',
   depositorProtectionUrl: 'https://www.gov.pl/web/finance/protection-of-depositors',
-  legalContactEmail: 'legal@skokwybrzeze.com',
+  legalContactEmail: 'support@skokbank.com',
   updatedAt: null,
 };
 

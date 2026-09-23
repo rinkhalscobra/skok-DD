@@ -150,7 +150,7 @@ export const disclosuresTranslations = {
     'disclosures.contact.department': 'Legal & Compliance Office',
     'disclosures.contact.address1': '[Insert Registered Address]',
     'disclosures.contact.address2': '[Insert City, Country, Postal Code]',
-    'disclosures.contact.email': '[Insert Legal Email]',
+    'disclosures.contact.email': 'support@skokbank.com',
     'disclosures.contact.phone': '[Insert Contact Number]',
 
     'disclosures.notice.title': '24. Important Notice',
@@ -306,7 +306,7 @@ export const disclosuresTranslations = {
     'disclosures.contact.department': 'Service Juridique & Conformité',
     'disclosures.contact.address1': "[Insérer l'adresse enregistrée]",
     'disclosures.contact.address2': '[Insérer la ville, le pays, le code postal]',
-    'disclosures.contact.email': "[Insérer l'email juridique]",
+    'disclosures.contact.email': 'support@skokbank.com',
     'disclosures.contact.phone': '[Insérer le numéro de contact]',
 
     'disclosures.notice.title': '24. Avis important',
@@ -462,7 +462,7 @@ export const disclosuresTranslations = {
     'disclosures.contact.department': 'Rechts- und Compliance-Abteilung',
     'disclosures.contact.address1': '[Eingetragene Adresse einfügen]',
     'disclosures.contact.address2': '[Stadt, Land, Postleitzahl einfügen]',
-    'disclosures.contact.email': '[Rechts-E-Mail einfügen]',
+    'disclosures.contact.email': 'support@skokbank.com',
     'disclosures.contact.phone': '[Kontaktnummer einfügen]',
 
     'disclosures.notice.title': '24. Wichtiger Hinweis',
@@ -618,7 +618,7 @@ export const disclosuresTranslations = {
     'disclosures.contact.department': 'Oficina Legal y de Cumplimiento',
     'disclosures.contact.address1': '[Inserte la dirección registrada]',
     'disclosures.contact.address2': '[Inserte la ciudad, el país y el código postal]',
-    'disclosures.contact.email': '[Inserte el correo electrónico legal]',
+    'disclosures.contact.email': 'support@skokbank.com',
     'disclosures.contact.phone': '[Inserte el número de contacto]',
 
     'disclosures.notice.title': '24. Aviso importante',
@@ -774,7 +774,7 @@ export const disclosuresTranslations = {
     'disclosures.contact.department': 'Ufficio Legale e Conformità',
     'disclosures.contact.address1': '[Inserire l’indirizzo registrato]',
     'disclosures.contact.address2': '[Inserire città, Paese e CAP]',
-    'disclosures.contact.email': '[Inserire l’e-mail legale]',
+    'disclosures.contact.email': 'support@skokbank.com',
     'disclosures.contact.phone': '[Inserire il numero di contatto]',
 
     'disclosures.notice.title': '24. Avviso importante',
@@ -930,7 +930,7 @@ export const disclosuresTranslations = {
     'disclosures.contact.department': 'Υπηρεσία Νομικών Υποθέσεων και Συμμόρφωσης',
     'disclosures.contact.address1': '[Εισαγάγετε την καταχωρισμένη διεύθυνση]',
     'disclosures.contact.address2': '[Εισαγάγετε πόλη, χώρα και ταχυδρομικό κώδικα]',
-    'disclosures.contact.email': '[Εισαγάγετε το νομικό email]',
+    'disclosures.contact.email': 'support@skokbank.com',
     'disclosures.contact.phone': '[Εισαγάγετε τον αριθμό επικοινωνίας]',
 
     'disclosures.notice.title': '24. Σημαντική ειδοποίηση',

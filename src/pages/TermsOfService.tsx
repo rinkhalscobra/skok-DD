@@ -392,7 +392,14 @@ export default function TermsOfService() {
                   <div className="mt-4 space-y-2 text-slate-700">
                     <p>{t('terms.contact.address1')}</p>
                     <p>{t('terms.contact.address2')}</p>
-                    <p>{t('terms.contact.email')}</p>
+                    <p>
+                      <a
+                        href={`mailto:${branding.legalContactEmail}`}
+                        className="font-medium text-[#006446] hover:underline"
+                      >
+                        {branding.legalContactEmail}
+                      </a>
+                    </p>
                     <p>{t('terms.contact.phone')}</p>
                   </div>
                 </div>

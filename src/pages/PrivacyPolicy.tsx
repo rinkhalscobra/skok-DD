@@ -324,7 +324,14 @@ export default function PrivacyPolicy() {
                   <div className="mt-4 space-y-2 text-surface-700">
                     <p>{t('privacyPolicy.contact.address1')}</p>
                     <p>{t('privacyPolicy.contact.address2')}</p>
-                    <p>{t('privacyPolicy.contact.email')}</p>
+                    <p>
+                      <a
+                        href={`mailto:${branding.legalContactEmail}`}
+                        className="font-medium text-[#006446] hover:underline"
+                      >
+                        {branding.legalContactEmail}
+                      </a>
+                    </p>
                     <p>{t('privacyPolicy.contact.phone')}</p>
                   </div>
                 </div>

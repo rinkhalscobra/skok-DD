@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useBranding } from '../contexts/BrandingContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import '../i18n/disclosures/translations';
 
@@ -159,6 +160,7 @@ function SectionCard({
 
 export default function Disclosures() {
   const { t } = useLanguage();
+  const { branding } = useBranding();
 
   const summaryCards = useMemo(
     () =>
@@ -295,7 +297,14 @@ export default function Disclosures() {
                   <div className="mt-4 space-y-2 text-surface-700">
                     <p>{t('disclosures.contact.address1')}</p>
                     <p>{t('disclosures.contact.address2')}</p>
-                    <p>{t('disclosures.contact.email')}</p>
+                    <p>
+                      <a
+                        href={`mailto:${branding.legalContactEmail}`}
+                        className="font-medium text-[#006446] hover:underline"
+                      >
+                        {branding.legalContactEmail}
+                      </a>
+                    </p>
                     <p>{t('disclosures.contact.phone')}</p>
                   </div>
                 </div>

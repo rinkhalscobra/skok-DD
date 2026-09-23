@@ -61,6 +61,13 @@ export default function Footer() {
                 {t('footerDescription')}
               </p>
 
+              <a
+                href={`mailto:${branding.legalContactEmail}`}
+                className="mt-5 inline-flex text-sm font-semibold text-[#006446] transition-colors hover:text-[#004f38] hover:underline"
+              >
+                {branding.legalContactEmail}
+              </a>
+
               <div className="mt-10 flex flex-wrap gap-3">
                 <div className="rounded-full border border-[#006446]/12 bg-white px-4 py-2 shadow-sm">
                   <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#006446]/65">

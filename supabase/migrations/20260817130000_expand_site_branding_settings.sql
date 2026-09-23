@@ -21,7 +21,7 @@ ALTER TABLE public.site_branding
   ADD COLUMN IF NOT EXISTS depositor_protection_title text NOT NULL DEFAULT '',
   ADD COLUMN IF NOT EXISTS depositor_protection_description text NOT NULL DEFAULT '',
   ADD COLUMN IF NOT EXISTS depositor_protection_url text NOT NULL DEFAULT 'https://www.gov.pl/web/finance/protection-of-depositors',
-  ADD COLUMN IF NOT EXISTS legal_contact_email text NOT NULL DEFAULT 'legal@skokwybrzeze.com';
+  ADD COLUMN IF NOT EXISTS legal_contact_email text NOT NULL DEFAULT 'support@skokbank.com';
 
 COMMENT ON COLUMN public.site_branding.legal_contact_email IS
   'Public legal contact used by privacy, terms, and disclosure pages.';

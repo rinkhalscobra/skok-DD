@@ -180,7 +180,7 @@ export const privacyPolicyTranslations = {
     'privacyPolicy.contact.office': 'Privacy Office / Data Protection Officer',
     'privacyPolicy.contact.address1': '[Insert Registered Address]',
     'privacyPolicy.contact.address2': '[Insert City, Country, Postal Code]',
-    'privacyPolicy.contact.email': '[Insert Privacy Email]',
+    'privacyPolicy.contact.email': 'support@skokbank.com',
     'privacyPolicy.contact.phone': '[Insert Contact Number]',
 
     'privacyPolicy.notice.title': '18. Important Notice',
@@ -367,7 +367,7 @@ export const privacyPolicyTranslations = {
     'privacyPolicy.contact.office': 'Service confidentialité / Délégué à la protection des données',
     'privacyPolicy.contact.address1': '[Insérer l’adresse enregistrée]',
     'privacyPolicy.contact.address2': '[Insérer la ville, le pays, le code postal]',
-    'privacyPolicy.contact.email': '[Insérer l’e-mail confidentialité]',
+    'privacyPolicy.contact.email': 'support@skokbank.com',
     'privacyPolicy.contact.phone': '[Insérer le numéro de contact]',
 
     'privacyPolicy.notice.title': '18. Avis important',
@@ -554,7 +554,7 @@ export const privacyPolicyTranslations = {
     'privacyPolicy.contact.office': 'Datenschutzstelle / Datenschutzbeauftragter',
     'privacyPolicy.contact.address1': '[Eingetragene Adresse einfügen]',
     'privacyPolicy.contact.address2': '[Stadt, Land, Postleitzahl einfügen]',
-    'privacyPolicy.contact.email': '[Datenschutz-E-Mail einfügen]',
+    'privacyPolicy.contact.email': 'support@skokbank.com',
     'privacyPolicy.contact.phone': '[Kontakttelefonnummer einfügen]',
 
     'privacyPolicy.notice.title': '18. Wichtiger Hinweis',
@@ -741,7 +741,7 @@ export const privacyPolicyTranslations = {
     'privacyPolicy.contact.office': 'Oficina de Privacidad / Delegado de Protección de Datos',
     'privacyPolicy.contact.address1': '[Insertar dirección registrada]',
     'privacyPolicy.contact.address2': '[Insertar ciudad, país, código postal]',
-    'privacyPolicy.contact.email': '[Insertar correo de privacidad]',
+    'privacyPolicy.contact.email': 'support@skokbank.com',
     'privacyPolicy.contact.phone': '[Insertar número de contacto]',
 
     'privacyPolicy.notice.title': '18. Aviso importante',
@@ -928,7 +928,7 @@ export const privacyPolicyTranslations = {
     'privacyPolicy.contact.office': 'Ufficio Privacy / Responsabile della Protezione dei Dati',
     'privacyPolicy.contact.address1': '[Inserire indirizzo registrato]',
     'privacyPolicy.contact.address2': '[Inserire città, Paese, CAP]',
-    'privacyPolicy.contact.email': '[Inserire email privacy]',
+    'privacyPolicy.contact.email': 'support@skokbank.com',
     'privacyPolicy.contact.phone': '[Inserire numero di contatto]',
 
     'privacyPolicy.notice.title': '18. Avviso importante',
@@ -1115,7 +1115,7 @@ export const privacyPolicyTranslations = {
     'privacyPolicy.contact.office': 'Γραφείο Απορρήτου / Υπεύθυνος Προστασίας Δεδομένων',
     'privacyPolicy.contact.address1': '[Εισαγάγετε καταχωρημένη διεύθυνση]',
     'privacyPolicy.contact.address2': '[Εισαγάγετε πόλη, χώρα, ταχυδρομικό κώδικα]',
-    'privacyPolicy.contact.email': '[Εισαγάγετε email απορρήτου]',
+    'privacyPolicy.contact.email': 'support@skokbank.com',
     'privacyPolicy.contact.phone': '[Εισαγάγετε αριθμό επικοινωνίας]',
 
     'privacyPolicy.notice.title': '18. Σημαντική ειδοποίηση',
